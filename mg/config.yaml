@@ -1,0 +1,41 @@
+# File paths and identifier columns
+files:
+  a:
+    path: "C:/Users/Seiya/Desktop/mgm/data/A.csv"
+    id_column: "code"  # The name of the identifier column in file A
+  b:
+    path: "C:/Users/Seiya/Desktop/mgm/data/B.csv"
+    id_column: "codeID"  # The name of the identifier column in file B
+  c:
+    path: "C:/Users/Seiya/Desktop/mgm/data/C.csv"
+    id_column: "codE"  # The name of the identifier column in file C
+
+# Columns to select from file C (besides the identifier)
+columns_from_c:
+  - "Location"
+  - "Title"
+
+# Join type for A and B (inner, left, right, outer)
+join_type: "inner"
+
+# Join type for merging with C (inner, left, right, outer)
+join_type_c: "left"
+
+# Output file path
+output_path: "zfinal_joined_data.csv"
+
+# Keep only the identifier from dataset A (remove identifiers from B and C)
+keep_only_a_identifier: true
+
+# Define redundant fields to remove after joining
+# Format: {"column_name": "dataset_to_keep"}
+# This specifies which version of the column to keep when multiple datasets have the same field
+redundant_fields:
+  - column: "Name"
+    keep_from: "a"  # Keep "Name" from dataset A, remove from others
+  # Add more redundant fields as needed
+
+# Database configuration
+database:
+  path: "output.db"  # Path to SQLite database file
+  table_name: "joined_data"  # Name of the table to create/replace
