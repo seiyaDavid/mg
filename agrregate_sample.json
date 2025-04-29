@@ -1,0 +1,16 @@
+df = pd.DataFrame(data = [
+    {"empName": "John", "Category": "Trade", "Sub_Category": "Gold", "Hit": 8},
+    {"empName": "Mary", "Category": "Basic", "Sub_Category": "Gold", "Hit": 2},
+    {"empName": "John", "Category": "Trade", "Sub_Category": "Silver", "Hit": 9},
+    {"empName": "Mary", "Category": "Basic", "Sub_Category": "Gold", "Hit": 2},
+    {"empName": "Peter", "Category": "Analytics", "Sub_Category": "Gold", "Hit": 4},
+    {"empName": "Peter", "Category": "Analytics", "Sub_Category": "Silver", "Hit": 6},
+    {"empName": "Peter", "Category": "Analytics", "Sub_Category": "Bronse", "Hit": 7},
+    {"empName": "Mary", "Category": "Basic", "Sub_Category": "Bronse", "Hit": 5},
+    {"empName": "Mary", "Category": "Basic", "Sub_Category": "Bronse", "Hit": 2},
+    {"empName": "Mary", "Category": "Basic", "Sub_Category": "Silver", "Hit": 6},
+    {"empName": "John", "Category": "Trade", "Sub_Category": "Bronse", "Hit": 10},
+    {"empName": "Daniel", "Category": "Analytics", "Sub_Category": "Gold", "Hit": 9}
+]
+)
+df.head()
