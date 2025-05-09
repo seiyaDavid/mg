@@ -92,6 +92,233 @@
    - Why it matters: Shows if news and social media are positive or negative
    - How we calculate it: We analyze news and social media sentiment
    - Example: A compound score of 0.31 with low volatility suggests consistent positive sentiment.
+  
+# **readers.md**
+
+## **1. How Indexes Are Calculated (FTSE 100 Example)**
+
+An index like the **FTSE 100** is a basket of the 100 largest companies listed on the London Stock Exchange, ranked by market capitalization.
+
+**Market Capitalization Formula:**
+
+$$
+\text{Market Cap} = \text{Share Price} \times \text{Number of Shares}
+$$
+
+The **FTSE 100 Index Level** is calculated using a **market-capitalization-weighted formula**, meaning companies with bigger market caps affect the index more.
+
+> **In Simple Terms:** It's like a scoreboard where big companies count more, and the index moves up or down based on their combined value.
+
+---
+
+## **2. VaR vs CVaR (Risk Measures)**
+
+### **VaR (Value at Risk)**
+
+**Meaning:** Measures how much you could lose on a "bad" day with a certain level of confidence (e.g. 95%).
+
+**Formula:**
+
+$$
+\text{VaR}_{\alpha} = \mu - z_{\alpha} \cdot \sigma
+$$
+
+* $\mu$ = mean return
+* $\sigma$ = standard deviation of returns (volatility)
+* $z_{\alpha}$ = z-score for the confidence level (e.g., 1.65 for 95%)
+
+> **Example:** A 95% VaR of \$100 means you are 95% confident you won't lose more than \$100.
+
+---
+
+### **CVaR (Conditional Value at Risk)**
+
+**Meaning:** Looks at the **average loss** if things go worse than the VaR level.
+
+**Formula:**
+
+$$
+\text{CVaR}_{\alpha} = \mathbb{E}[L | L > \text{VaR}_{\alpha}]
+$$
+
+* It’s the **expected loss given that loss exceeds the VaR**.
+
+> **CVaR gives more info about the extreme tail risk**.
+
+---
+
+## **3. Sharpe Ratio vs Calmar Ratio**
+
+### **Sharpe Ratio**
+
+Measures **risk-adjusted return**: how much return you earn for each unit of risk (volatility).
+
+**Formula:**
+
+$$
+\text{Sharpe Ratio} = \frac{R_p - R_f}{\sigma_p}
+$$
+
+* $R_p$ = portfolio return
+* $R_f$ = risk-free return (e.g., government bond)
+* $\sigma_p$ = standard deviation of portfolio returns
+
+---
+
+### **Calmar Ratio**
+
+Focuses on **return vs worst loss** (max drawdown), especially useful in evaluating hedge funds or trading systems.
+
+**Formula:**
+
+$$
+\text{Calmar Ratio} = \frac{\text{Annual Return}}{\text{Maximum Drawdown}}
+$$
+
+* Max drawdown = biggest peak-to-trough loss over a period
+
+> **Sharpe** punishes day-to-day choppiness, **Calmar** punishes big ugly crashes.
+
+---
+
+## **4. Volatility**
+
+Volatility shows how "bouncy" an investment is — how much the returns change up and down.
+
+**Formula:**
+
+$$
+\text{Volatility}_{\text{annual}} = \text{Std Dev of Daily Returns} \times \sqrt{252}
+$$
+
+> (There are about 252 trading days in a year)
+
+Higher volatility means more risk and more potential reward/loss.
+
+---
+
+## **5. Key Investment Concepts**
+
+### **Diversification**
+
+* Don’t put all your money into one stock.
+* Spread across sectors, assets, or geographies to reduce risk.
+
+### **Time in the Market vs Timing the Market**
+
+* Staying invested long-term usually works better than trying to predict highs/lows.
+
+### **Compound Interest**
+
+* Your money earns money, and that earns even more. Grows like a snowball!
+
+### **Drawdown**
+
+* Measures how far a portfolio has dropped from its peak.
+
+**Formula:**
+
+$$
+\text{Drawdown} = \frac{\text{Peak} - \text{Trough}}{\text{Peak}}
+$$
+
+### **Fundamentals vs Technicals**
+
+* **Fundamentals** = profits, sales, news (like reading a company’s report card)
+* **Technicals** = charts, patterns, trends (like studying its mood)
+
+### **Sentiment**
+
+* People's feelings (fear, greed) move prices — not just facts!
+
+---
+
+## **6. Active vs Passive ETFs**
+
+### **ETF (Exchange-Traded Fund)**
+
+A basket of stocks traded like a single stock. Like a lunchbox filled with snacks (stocks), you can buy or sell it easily.
+
+---
+
+### **Active ETF**
+
+* Has managers who **choose** which stocks to buy/sell.
+* Goal: **beat the market**.
+* Higher fees because of active management.
+
+> **Think:** A chef cooking based on taste and market smell.
+
+---
+
+### **Passive ETF**
+
+* **Follows an index** (like FTSE 100 or S\&P 500).
+* No human decisions, just tracks the index.
+* Lower fees, because no active work.
+
+> **Think:** A robot that copies the index.
+
+---
+
+## **7. Tail Risk**
+
+Tail risk is the chance of rare, extreme events that cause large losses or gains. It sits in the "tail" of a normal distribution curve.
+
+* **Left tail:** Big losses (market crashes)
+* **Right tail:** Big gains (unexpected booms)
+
+**Why it matters:**
+Most models assume the world is normal — but the real world has surprises. Tail risks are underestimated and can wipe out portfolios.
+
+---
+
+## **8. Speak Like a Pro: Equity Trader Language 101**
+
+To have a fluent chat with an equity trader, understand these professional terms and phrases:
+
+### 📈 Core Terms
+
+* **Ticker:** Stock symbol (e.g., AAPL for Apple)
+* **Execution:** Placing or completing a trade
+* **Order Types:** Market, limit, stop-loss, etc.
+* **Liquidity:** How easy it is to buy/sell without moving the price
+* **Spread:** Difference between bid and ask price
+* **Slippage:** Price difference between expected and actual execution
+
+### 📉 Strategy Lingo
+
+* **Long/Short:** Buy (expect rise) / Sell (expect fall)
+* **Pair Trade:** Long one stock, short another in same sector
+* **Alpha:** Excess return above the benchmark
+* **Beta:** Sensitivity to market movement
+* **Hedge:** Reduce risk using other positions
+* **PnL (Profit & Loss):** Trader’s scorecard
+
+### 📊 Risk Metrics
+
+* **VaR/CVaR:** How much you could lose in bad scenarios
+* **Drawdown:** Peak to trough loss
+* **Sharpe/Calmar Ratios:** Return per unit of risk or pain
+
+### 🧠 Behavioral Lingo
+
+* **Sentiment:** Market mood (greed/fear)
+* **FOMO:** Fear of missing out
+* **Capitulation:** Panic selling
+* **Overbought/Oversold:** Too high/too low vs recent trends
+
+### 🛠 Tools & Platforms
+
+* **Bloomberg Terminal:** Pro tool for data & trading
+* **TradingView/MetaTrader:** Charting and signal tools
+
+### 🔥 Conversation Tips
+
+* Ask: “What’s your view on \[stock/sector] this week?”
+* Say: “What’s the trade setup?” or “Where’s the risk?”
+* React: “Nice entry” or “Solid risk-reward ratio.”
+
 
 4. **Price Change Score**
    - What it means: How the stock price has moved recently
