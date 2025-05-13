@@ -73,3 +73,29 @@ def create_ppt_from_slide_data(slide_data, output_path):
 # Example usage
 slide_data = parse_word_with_tags("your_doc.docx")
 create_ppt_from_slide_data(slide_data, "output_presentation.pptx")
+
+
+
+
+# Add bullet points
+if data['bullets']:
+    bullet_box = slide.shapes.add_textbox(Inches(0.7), Inches(1.5), Inches(8.5), Inches(4.5))
+    bullet_frame = bullet_box.text_frame
+    bullet_frame.word_wrap = True
+    bullet_frame.auto_size = False  # Avoid overflow
+    
+    # First bullet paragraph is reused, so set that separately
+    first_para = bullet_frame.paragraphs[0]
+    first_para.text = data['bullets'][0]
+    first_para.level = 0
+    first_para.space_after = Pt(8)
+    first_para.font.size = Pt(20)
+    first_para.font.name = 'Calibri'
+
+    for bullet in data['bullets'][1:]:
+        p = bullet_frame.add_paragraph()
+        p.text = bullet
+        p.level = 0
+        p.space_after = Pt(8)
+        p.font.size = Pt(20)
+        p.font.name = 'Calibri'
