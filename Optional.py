@@ -2,11 +2,12 @@ from docx import Document
 from pptx import Presentation
 from pptx.util import Inches, Pt
 from pptx.dml.color import RGBColor
+import re
 
-# 1. Parse the Word .docx file
-def parse_word_docx(docx_path):
+def parse_word_docx_ordered(docx_path):
     doc = Document(docx_path)
-    slide_data = []
+    slide_map = {}
+    current_slide_num = None
     current_slide = {}
     bullets = []
 
@@ -15,38 +16,46 @@ def parse_word_docx(docx_path):
         if not line:
             continue
 
-        if line.startswith("[SLIDE:"):
-            if current_slide:
+        # Match [SLIDE:X] regardless of position
+        slide_match = re.match(r"\[SLIDE:(\d+)\]", line, re.IGNORECASE)
+        if slide_match:
+            # Save previous slide
+            if current_slide_num is not None:
                 current_slide['bullets'] = bullets
-                slide_data.append(current_slide)
+                slide_map[int(current_slide_num)] = current_slide
                 current_slide = {}
                 bullets = []
-        elif line.startswith("Heading:"):
-            current_slide['heading'] = line.replace("Heading:", "").strip()
-        elif line.startswith("Bullet:") or line.startswith("SubBullet:"):
-            bullets.append(line)
-        elif line.startswith("Note:"):
-            current_slide['note'] = line.replace("Note:", "").strip()
+            current_slide_num = int(slide_match.group(1))
+            continue
 
-    if current_slide:
+        if line.lower().startswith("heading:"):
+            current_slide['heading'] = line.split(":", 1)[1].strip()
+        elif line.lower().startswith("bullet:") or line.lower().startswith("subbullet:"):
+            bullets.append(line.strip())
+        elif line.lower().startswith("note:"):
+            current_slide['note'] = line.split(":", 1)[1].strip()
+
+    # Save the last slide
+    if current_slide_num is not None:
         current_slide['bullets'] = bullets
-        slide_data.append(current_slide)
+        slide_map[int(current_slide_num)] = current_slide
 
-    return slide_data
+    # Return slide data sorted by slide number
+    sorted_slide_data = [slide_map[k] for k in sorted(slide_map.keys())]
+    return sorted_slide_data
 
-# 2. Create the PowerPoint
 def create_presentation(slide_data, output_file="from_word.pptx"):
     prs = Presentation()
 
     for idx, data in enumerate(slide_data):
-        slide = prs.slides.add_slide(prs.slide_layouts[5])  # blank slide
+        slide = prs.slides.add_slide(prs.slide_layouts[5])  # Blank layout
 
         # Remove default placeholders
         for shape in list(slide.shapes):
             if shape.is_placeholder:
                 slide.shapes._spTree.remove(shape._element)
 
-        # Title in red with slide number
+        # Add title with red color and Slide number prefix
         title_text = f"[Slide {idx + 1}] {data.get('heading', '')}"
         title_box = slide.shapes.add_textbox(Inches(0.7), Inches(0.5), Inches(8.0), Inches(1))
         title_frame = title_box.text_frame
@@ -57,7 +66,7 @@ def create_presentation(slide_data, output_file="from_word.pptx"):
         p.font.bold = True
         p.font.color.rgb = RGBColor(255, 0, 0)
 
-        # Bullets
+        # Add bullets and sub-bullets
         bullets = data.get('bullets', [])
         if bullets:
             body_box = slide.shapes.add_textbox(Inches(0.7), Inches(1.5), Inches(8.0), Inches(4.5))
@@ -67,7 +76,7 @@ def create_presentation(slide_data, output_file="from_word.pptx"):
 
             for i, bullet in enumerate(bullets):
                 level = 1 if bullet.lower().startswith("subbullet:") else 0
-                clean_text = bullet.replace("Bullet:", "").replace("SubBullet:", "").strip()
+                clean_text = re.sub(r"^(Bullet|SubBullet):", "", bullet, flags=re.IGNORECASE).strip()
 
                 p = tf.add_paragraph() if i > 0 else tf.paragraphs[0]
                 p.text = clean_text
@@ -75,7 +84,7 @@ def create_presentation(slide_data, output_file="from_word.pptx"):
                 p.font.size = Pt(20)
                 p.font.name = 'Calibri'
 
-        # Notes
+        # Add speaker notes if available
         note_text = data.get('note')
         if note_text:
             notes_slide = slide.notes_slide
@@ -83,25 +92,7 @@ def create_presentation(slide_data, output_file="from_word.pptx"):
 
     prs.save(output_file)
 
-# 3. Run it
-docx_file = "your_input.docx"  # Replace with your actual Word file
-slide_data = parse_word_docx(docx_file)
-create_presentation(slide_data, output_file="generated_from_word.pptx")
-
-
-
-
-
-
-[SLIDE:1]
-Heading: Business Strategy
-Bullet: Increase market share
-SubBullet: Focus on emerging markets
-Bullet: Launch new product line
-Note: Mention the Q4 timeline here
-
-[SLIDE:2]
-Heading: Risks and Mitigations
-Bullet: Supply chain challenges
-SubBullet: Diversify suppliers
-Note: Stress importance of risk planning
+# Usage
+docx_file = "your_input.docx"  # replace with your actual file
+slides = parse_word_docx_ordered(docx_file)
+create_presentation(slides, output_file="generated_from_word.pptx")
