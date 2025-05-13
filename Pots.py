@@ -80,26 +80,19 @@ create_ppt_from_slide_data(slide_data, "output_presentation.pptx")
 from pptx.enum.text import PP_PARAGRAPH_ALIGNMENT
 
 # Add bullet points
+# Add bullet points
 if data['bullets']:
     bullet_box = slide.shapes.add_textbox(Inches(0.7), Inches(1.5), Inches(8.5), Inches(4.5))
     bullet_frame = bullet_box.text_frame
-    bullet_frame.clear()  # clear default paragraph to ensure bullets behave
+    bullet_frame.clear()  # Remove default empty paragraph
 
     for i, bullet in enumerate(data['bullets']):
+        # First paragraph is already available after clear()
         p = bullet_frame.add_paragraph() if i > 0 else bullet_frame.paragraphs[0]
         p.text = bullet
-        p.level = 0
+        p.level = 0  # Bullet level 0
         p.font.size = Pt(20)
         p.font.name = 'Calibri'
-        p.font.bold = False
-        p.space_after = Pt(8)
-        p.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
+        p.space_after = Pt(10)
         p.line_spacing = Pt(24)
         p.font.color.rgb = RGBColor(0, 0, 0)
-        p.font.italic = False
-        p.font.underline = False
-        p.font.shadow = False
-        p.font._element.set("dirty", "false")  # ensures clean bulleting
-
-        # ✅ Ensure it displays as a bullet
-        p._element.get_or_add_pPr().get_or_add_buChar().val = u'\u2022'
